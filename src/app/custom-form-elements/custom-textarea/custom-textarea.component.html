@@ -1,0 +1,10 @@
+<label>{{ label }}</label>
+<textarea
+  [placeholder]="placeholder"
+  [value]="value"
+  [disabled]="disabled"
+  [required]="required"
+  (input)="onChange($event.target.value)"
+  (blur)="onTouched($event.target.value)"
+></textarea>
+{{ required }}

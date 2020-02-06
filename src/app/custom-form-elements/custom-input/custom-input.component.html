@@ -1,0 +1,10 @@
+<div [formGroup]="form">
+  <label> {{ label }} <span *ngIf="required">*</span> </label>
+  <input formControlName="value" type="text" [required]="required" />
+  <div
+    *ngIf="inputValue.touched && inputValue.hasError('required')"
+    class="error"
+  >
+    {{ label }} is a required field
+  </div>
+</div>
