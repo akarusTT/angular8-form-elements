@@ -1,0 +1,22 @@
+<form [formGroup]="customUserForm" (ngSubmit)="submit()">
+  <app-custom-input
+    formControlName="firstname"
+    label="First Name"
+  ></app-custom-input>
+
+  <app-custom-input
+    formControlName="lastname"
+    label="Last Name"
+  ></app-custom-input>
+
+  <app-custom-input
+    formControlName="email"
+    label="Email"
+    required="true"
+  ></app-custom-input>
+  <button>Update</button>
+  <button type="button" (click)="resetForm()">Reset</button>
+</form>
+
+<p>Form is {{ customUserForm.valid ? 'Valid' : 'Invalid' }}</p>
+<pre><code>{{ customUserForm.value | json }}</code></pre>
