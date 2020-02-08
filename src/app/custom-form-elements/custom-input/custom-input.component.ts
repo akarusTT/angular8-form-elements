@@ -1,104 +1,70 @@
-import { Component, forwardRef, OnDestroy, Input } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormControl,
-  NG_VALIDATORS
-} from '@angular/forms';
-import { Subscription } from 'rxjs';
-
-// describes what the return value of the form control will look like
-export interface FormControlValue {
-  value: string;
-}
+import { Component, OnInit, Input, Self, Optional } from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-input',
   templateUrl: './custom-input.component.html',
-  styleUrls: ['./custom-input.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => CustomInputComponent),
-      multi: true
-    },
-    {
-      provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => CustomInputComponent),
-      multi: true
-    }
-  ]
+  styleUrls: ['./custom-input.component.scss']
 })
-export class CustomInputComponent implements ControlValueAccessor, OnDestroy {
-  @Input() label;
-  @Input() required;
+export class CustomInputComponent implements ControlValueAccessor, OnInit {
+  @Input() disabled: boolean;
+  @Input() required: boolean;
+  @Input() label: string;
+  @Input() placeholder = '';
+  @Input() type: 'text' | 'email' | 'password' = 'text';
 
-  form: FormGroup;
-  subscriptions: Subscription[] = [];
+  value: any = '';
 
-  get value(): FormControlValue {
-    return this.form.value;
+  constructor(
+    // Retrieve the dependency only from the local injector,
+    // not from parent or ancestors.
+    @Self()
+    // We want to be able to use the component without a form,
+    // so we mark the dependency as optional.
+    @Optional()
+    private ngControl: NgControl
+  ) {
+    if (this.ngControl) {
+      this.ngControl.valueAccessor = this;
+    }
   }
 
-  set value(value: FormControlValue) {
-    this.form.setValue(value);
-    this.onChange(value);
-    this.onTouched();
+  ngOnInit() {}
+
+  /**
+   * Write form value to the DOM element (model => view)
+   */
+  writeValue(value: any): void {
+    this.value = value;
   }
 
-  get inputValue() {
-    return this.form.controls.value;
+  /**
+   * Write form disabled state to the DOM element (model => view)
+   */
+  setDisabledState(isDisabled: boolean): void {
+    this.disabled = isDisabled;
   }
 
-  constructor(private formBuilder: FormBuilder) {
-    // create the inner form
-    this.form = this.formBuilder.group({
-      value: ['']
-    });
-
-    this.subscriptions.push(
-      // any time the inner form changes update the parent of any change
-      this.form.valueChanges.subscribe(value => {
-        this.onChange(value);
-        this.onTouched();
-      })
-    );
+  setRequiredState(isRequired: boolean): void {
+    this.required = isRequired;
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(s => s.unsubscribe());
-  }
-
-  onChange: any = () => {};
-  onTouched: any = () => {};
-
-  registerOnChange(fn) {
+  /**
+   * Update form when DOM element value changes (view => model)
+   */
+  registerOnChange(fn: any): void {
+    // Store the provided function as an internal method.
     this.onChange = fn;
   }
 
-  writeValue(value) {
-    if (value) {
-      this.value = value;
-    }
-
-    if (value === null) {
-      this.form.reset();
-    }
-  }
-
-  // setDisabledState(isDisabled: boolean) {
-  //   this.disabled = isDisabled;
-  // }
-
-  registerOnTouched(fn) {
+  /**
+   * Update form when DOM element is blurred (view => model)
+   */
+  registerOnTouched(fn: any): void {
+    // Store the provided function as an internal method.
     this.onTouched = fn;
   }
 
-  // communicate the inner form validation to the parent form
-  validate(_: FormControl) {
-    return this.form.valid ? null : { customInput: { valid: false } };
-  }
+  private onChange() {}
+  private onTouched() {}
 }

@@ -1,10 +1,25 @@
-<div [formGroup]="form">
-  <label> {{ label }} <span *ngIf="required">*</span> </label>
-  <input formControlName="value" type="text" [required]="required" />
-  <div
-    *ngIf="inputValue.touched && inputValue.hasError('required')"
-    class="error"
-  >
-    {{ label }} is a required field
-  </div>
+<label>{{ label }} <span *ngIf="required">*</span></label>
+<input
+  [type]="type"
+  [placeholder]="label"
+  [value]="value"
+  [disabled]="disabled"
+  (input)="onChange($event.target.value)"
+  (blur)="onTouched()"
+/>
+
+<div
+  *ngIf="
+    (this.ngControl.touched && this.ngControl.hasError('required')) || required
+  "
+  class="error"
+>
+  {{ label }} is required
+</div>
+
+<div
+  *ngIf="this.ngControl.touched && this.ngControl.hasError('email')"
+  class="error"
+>
+  {{ label }} is not formatted correctly
 </div>

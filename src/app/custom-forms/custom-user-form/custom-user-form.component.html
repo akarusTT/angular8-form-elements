@@ -2,17 +2,19 @@
   <app-custom-input
     formControlName="firstname"
     label="First Name"
+    [required]="required"
   ></app-custom-input>
 
   <app-custom-input
     formControlName="lastname"
     label="Last Name"
+    [required]="required"
   ></app-custom-input>
 
   <app-custom-input
     formControlName="email"
     label="Email"
-    required="true"
+    [required]="required"
   ></app-custom-input>
   <button>Update</button>
   <button type="button" (click)="resetForm()">Reset</button>
