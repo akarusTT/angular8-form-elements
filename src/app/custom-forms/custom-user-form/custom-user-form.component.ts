@@ -14,21 +14,26 @@ import {
 export class CustomUserFormComponent implements OnInit {
   customUserForm: FormGroup;
   required: boolean;
-  emailError: boolean;
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.customUserForm = this.formBuilder.group({
       firstname: new FormControl('', [Validators.required]),
       lastname: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required, Validators.email])
+      email: new FormControl('', [Validators.required, Validators.email]),
+      gender: new FormControl('', [Validators.required])
     });
   }
 
   submit() {
-    Object.keys(this.customUserForm.controls).forEach(key => {
-      this.required = this.customUserForm.controls[key].hasError('required');
-    });
+    // Object.keys(this.customUserForm.controls).forEach(key => {
+    //   this.required = this.customUserForm.controls[key].hasError('required');
+    // });
+
+    if (this.customUserForm.valid) {
+      console.log(this.customUserForm.value);
+    }
   }
 
   resetForm() {

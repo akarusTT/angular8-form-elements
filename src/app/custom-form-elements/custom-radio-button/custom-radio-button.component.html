@@ -1,1 +1,21 @@
-<p>custom-radio-button works!</p>
+<div class="radio-button">
+  <input
+    type="radio"
+    [placeholder]="label"
+    [name]="formControlName"
+    [value]="label"
+    [disabled]="disabled"
+    (input)="onChange($event.target.value)"
+    (blur)="onTouched()"
+  /><label>{{ label }} <span *ngIf="required">*</span></label>
+
+  <div
+    *ngIf="
+      (this.ngControl.touched && this.ngControl.hasError('required')) ||
+      required
+    "
+    class="error"
+  >
+    {{ label }} is required
+  </div>
+</div>

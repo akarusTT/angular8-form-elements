@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Self, Optional } from '@angular/core';
+import { Component, Input, Self, Optional } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -6,7 +6,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   templateUrl: './custom-input.component.html',
   styleUrls: ['./custom-input.component.scss']
 })
-export class CustomInputComponent implements ControlValueAccessor, OnInit {
+export class CustomInputComponent implements ControlValueAccessor {
   @Input() disabled: boolean;
   @Input() required: boolean;
   @Input() label: string;
@@ -28,8 +28,6 @@ export class CustomInputComponent implements ControlValueAccessor, OnInit {
       this.ngControl.valueAccessor = this;
     }
   }
-
-  ngOnInit() {}
 
   /**
    * Write form value to the DOM element (model => view)

@@ -1,1 +1,14 @@
-<p>custom-checkbox works!</p>
+<input
+  type="checkbox"
+  [placeholder]="label"
+  [value]="value"
+  [disabled]="disabled"
+  (checked)="onChange($event.target.checked)"
+/>
+<label>{{ label }} <span *ngIf="required">*</span></label>
+
+<div *ngIf="required" class="error">{{ label }} is required</div>
+
+<div *ngIf="this.ngControl.checked" class="error">
+  {{ label }} is not formatted correctly
+</div>

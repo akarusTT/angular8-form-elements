@@ -16,7 +16,18 @@
     label="Email"
     [required]="required"
   ></app-custom-input>
-  <button>Update</button>
+
+  <app-custom-radio-button
+    formControlName="gender"
+    label="Male"
+  ></app-custom-radio-button>
+
+  <app-custom-radio-button
+    formControlName="gender"
+    label="Female"
+  ></app-custom-radio-button>
+
+  <button [disabled]="customUserForm.invalid">Update</button>
   <button type="button" (click)="resetForm()">Reset</button>
 </form>
 
